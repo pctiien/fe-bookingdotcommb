@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:icon="@drawable/ic_baseline_single_bed_24"
+        android:title="Stays"
+        android:id="@+id/stays">
+    </item>
+
+    <item
+        android:icon="@drawable/ic_baseline_directions_car_24"
+        android:title="Car rental"
+        android:id="@+id/car_rental">
+    </item>
+
+    <item
+        android:icon="@drawable/ic_baseline_local_taxi_24"
+        android:title="Taxi"
+        android:id="@+id/taxi">
+    </item>
+
+    <item
+        android:icon="@drawable/ic_baseline_attractions_24"
+        android:title="Attractions"
+        android:id="@+id/attractions">
+    </item>
+</menu>
