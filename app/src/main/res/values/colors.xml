@@ -9,4 +9,10 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#2758A5</color>
     <color name="hardblue">#054298</color>
+    <color name="yellow">#FFC107</color>
+    <color name="light_blue">#006CE3</color>
+    <color name="trackTint">#55A5F2</color>
+    <color name="bg_blue">#EFF6FE</color>
+    <color name="brown">#868686</color>
+    <color name="light_brown">#E7E7E7</color>
 </resources>
