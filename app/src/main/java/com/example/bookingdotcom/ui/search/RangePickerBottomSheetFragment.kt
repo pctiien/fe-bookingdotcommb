@@ -1,30 +1,26 @@
-package com.example.bookingdotcom.ui.search.fragment
+    package com.example.bookingdotcom.ui.search
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
-import androidx.core.util.Pair
-import com.example.bookingdotcom.ui.search.RangePickerBottomSheetFragment
-import com.example.bookingdotcom.ui.search_activity.StaysSearchActivity
+import android.widget.FrameLayout
 import com.example.myapplication.R
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener
 
-// TODO: Rename parameter arguments, choose names that match
+    // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [StaysFragment.newInstance] factory method to
+ * Use the [BottomSheetDialogFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class StaysFragment : Fragment() {
+class RangePickerBottomSheetFragment:BottomSheetDialogFragment(){
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -36,28 +32,29 @@ class StaysFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
     }
-    lateinit var searchContainer : RelativeLayout
-    lateinit var calendarContainer :RelativeLayout
-
+    lateinit var layout :FrameLayout
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view =inflater.inflate(R.layout.fragment_stays, container, false)
-        searchContainer = view.findViewById<RelativeLayout>(R.id.stays_search)
-        searchContainer.setOnClickListener {
-            var intent : Intent = Intent(activity,StaysSearchActivity::class.java)
-            startActivity(intent)
+        val view = inflater.inflate(R.layout.fragment_range_picker_bottom_sheet, container, false)
+
+        val datePicker = MaterialDatePicker.Builder.dateRangePicker()
+            .setTitleText("Select Dates")
+            .setSelection(
+                androidx.core.util.Pair(
+                    MaterialDatePicker.thisMonthInUtcMilliseconds(),
+                    MaterialDatePicker.todayInUtcMilliseconds()
+                )
+            )
+            .build()
+
+        datePicker.addOnPositiveButtonClickListener { selection ->
+            val startDate = selection.first
+            val endDate = selection.second
+            // Xử lý sự kiện khi ngày được chọn
         }
-        calendarContainer = view.findViewById<RelativeLayout>(R.id.stays_week)
-        val datePickerFragment = RangePickerBottomSheetFragment()
-
-        calendarContainer.setOnClickListener {
-            datePickerFragment.show(childFragmentManager, datePickerFragment.tag)
-        }
-
-
-        // Inflate the layout for this fragment
+        datePicker.show(childFragmentManager, "Range Picker Bottom Sheet")
         return view
     }
 
@@ -68,12 +65,12 @@ class StaysFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment StaysFragment.
+         * @return A new instance of fragment BottomSheetDialogFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            StaysFragment().apply {
+            RangePickerBottomSheetFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
