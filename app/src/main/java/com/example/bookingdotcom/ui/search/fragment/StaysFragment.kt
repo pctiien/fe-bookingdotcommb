@@ -2,17 +2,27 @@ package com.example.bookingdotcom.ui.search.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.core.util.Pair
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import com.example.bookingdotcom.model.Location
+import com.example.bookingdotcom.networkService.ApiState
+import com.example.bookingdotcom.repository.LocationRepository
 import com.example.bookingdotcom.ui.search.RangePickerBottomSheetFragment
 import com.example.bookingdotcom.ui.search_activity.StaysSearchActivity
+import com.example.bookingdotcom.viewmodel.LocationVM
+import com.example.bookingdotcom.viewmodelfactory.LocationViewModelFactory
 import com.example.myapplication.R
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener
+import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -38,6 +48,7 @@ class StaysFragment : Fragment() {
     }
     lateinit var searchContainer : RelativeLayout
     lateinit var calendarContainer :RelativeLayout
+    lateinit var locationVM :LocationVM
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,6 +65,49 @@ class StaysFragment : Fragment() {
 
         calendarContainer.setOnClickListener {
             datePickerFragment.show(childFragmentManager, datePickerFragment.tag)
+        }
+        locationVM = ViewModelProvider(
+            this,
+            LocationViewModelFactory(LocationRepository())
+        )[LocationVM::class.java]
+        locationVM.getListLocation("a")
+
+        lifecycleScope.launch {
+            locationVM.myDataList.collect {
+                lifecycleScope.launch {
+                    locationVM.myDataList.collect { apiState ->
+                        when (apiState) {
+                            is ApiState.Loading -> {
+                                // Hiển thị biểu tượng tải hoặc thông báo đang tải
+                                Log.d("api call","loading")
+
+                            }
+                            is ApiState.Failure -> {
+                                val error = apiState.e
+                                // Xử lý lỗi và hiển thị thông báo lỗi
+                                Log.d("api call",error.toString())
+
+                            }
+                            is ApiState.Success -> {
+                                val data = apiState.data
+                                // Xử lý dữ liệu thành công
+                                Log.d("api call","success")
+                                if(data is ArrayList<*>)
+                                {
+                                    // Doing with data
+                                }
+                                Log.d("api call", "Data type: ${data::class.qualifiedName}")
+
+                            }
+                            is ApiState.Empty -> {
+                                // Xử lý trạng thái không có dữ liệu
+                                Log.d("api call","empty")
+
+                            }
+                        }
+                    }
+                }
+            }
         }
 
 
