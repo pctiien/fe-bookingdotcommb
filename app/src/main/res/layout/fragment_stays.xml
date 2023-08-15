@@ -106,6 +106,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_search"
                     android:textAllCaps="false"
                     android:background="@drawable/button_bot"
                     android:textColor="@color/white"

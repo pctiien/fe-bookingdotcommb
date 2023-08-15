@@ -4,5 +4,5 @@ object AllApi {
 
     private external fun baseUrlFromJNI(boolean: Boolean): String
 
-    const val BASE_URL = "http://localhost:5227"
+    const val BASE_URL = "http://10.0.2.2:5227/"
 }

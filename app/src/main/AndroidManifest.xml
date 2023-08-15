@@ -16,6 +16,20 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="33">
         <activity
+            android:name="com.example.bookingdotcom.ui.search.fragment.staysChild.LocationDetailActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name="com.example.bookingdotcom.ui.search.fragment.staysChild.LocationActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name="com.example.bookingdotcom.ui.search_activity.StaysSearchActivity"
             android:exported="false">
             <meta-data

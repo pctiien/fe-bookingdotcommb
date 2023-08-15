@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/layout"
+    android:padding="15dp"
+    android:weightSum="1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.card.MaterialCardView
+        app:cardCornerRadius="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.65" >
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img_poster"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </com.google.android.material.card.MaterialCardView>
+    <RelativeLayout
+        android:layout_weight="0.35"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_marginEnd="15dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/ic_baseline_favorite_border_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <RelativeLayout
+            android:id="@+id/container1"
+            android:layout_marginStart="15dp"
+            android:layout_alignParentStart="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/txt_locationname"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <RelativeLayout
+                android:layout_marginTop="5dp"
+                android:id="@+id/txt_rating"
+                android:layout_below="@id/txt_locationname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <include android:id="@+id/layout_rating" layout="@layout/rating"></include>
+                <TextView
+                    android:layout_marginStart="5dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/layout_rating"
+                    android:text="Very good 1742 reviews"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_marginTop="5dp"
+                android:layout_below="@id/txt_rating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_centerVertical="true"
+                    android:id="@+id/asset_location"
+                    android:background="@drawable/ic_baseline_location_on_24"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/asset_location"
+                    android:text="1.2 miles from centre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            android:id="@+id/container2"
+            android:layout_below="@id/container1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textSize="13sp"
+                android:maxWidth="110dp"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/txt_hotelroom"
+                android:text="Hotel room: 1 bed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:textSize="13sp"
+                android:maxWidth="120dp"
+                android:layout_marginTop="10dp"
+                android:layout_alignParentEnd="true"
+                android:textColor="@color/black"
+                android:id="@+id/txt_pricetinfo"
+                android:layout_below="@id/txt_hotelroom"
+                android:text="Price for 1 night, 2 adults, 1 child"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:textSize="15sp"
+                android:layout_marginTop="5dp"
+                android:id="@+id/txt_discount"
+                android:textColor="@color/red"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/txt_pricetinfo"
+                android:text="VND 3,085,217"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/txt_price"
+                android:layout_marginTop="5dp"
+                android:layout_alignParentEnd="true"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:layout_below="@id/txt_discount"
+                android:text="VND 2,499,091"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_below="@id/txt_price"
+                android:text="Additional charges may apply"
+                android:layout_alignParentEnd="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>

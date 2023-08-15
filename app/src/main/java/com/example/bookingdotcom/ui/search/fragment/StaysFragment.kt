@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
+import androidx.appcompat.widget.AppCompatButton
 import androidx.core.util.Pair
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -16,6 +17,7 @@ import com.example.bookingdotcom.model.Location
 import com.example.bookingdotcom.networkService.ApiState
 import com.example.bookingdotcom.repository.LocationRepository
 import com.example.bookingdotcom.ui.search.RangePickerBottomSheetFragment
+import com.example.bookingdotcom.ui.search.fragment.staysChild.LocationActivity
 import com.example.bookingdotcom.ui.search_activity.StaysSearchActivity
 import com.example.bookingdotcom.viewmodel.LocationVM
 import com.example.bookingdotcom.viewmodelfactory.LocationViewModelFactory
@@ -49,6 +51,7 @@ class StaysFragment : Fragment() {
     lateinit var searchContainer : RelativeLayout
     lateinit var calendarContainer :RelativeLayout
     lateinit var locationVM :LocationVM
+    lateinit var searchButton : AppCompatButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,56 +63,17 @@ class StaysFragment : Fragment() {
             var intent : Intent = Intent(activity,StaysSearchActivity::class.java)
             startActivity(intent)
         }
-        calendarContainer = view.findViewById<RelativeLayout>(R.id.stays_week)
-        val datePickerFragment = RangePickerBottomSheetFragment()
-
-        calendarContainer.setOnClickListener {
-            datePickerFragment.show(childFragmentManager, datePickerFragment.tag)
+        searchButton = view.findViewById<AppCompatButton>(R.id.btn_search)
+        searchButton.setOnClickListener {
+            Log.d("Console","clicked")
+            val intent = Intent(requireContext(),LocationActivity::class.java)
+            startActivity(intent)
         }
+        calendarContainer = view.findViewById<RelativeLayout>(R.id.stays_week)
         locationVM = ViewModelProvider(
             this,
             LocationViewModelFactory(LocationRepository())
         )[LocationVM::class.java]
-        locationVM.getListLocation("a")
-
-        lifecycleScope.launch {
-            locationVM.myDataList.collect {
-                lifecycleScope.launch {
-                    locationVM.myDataList.collect { apiState ->
-                        when (apiState) {
-                            is ApiState.Loading -> {
-                                // Hiển thị biểu tượng tải hoặc thông báo đang tải
-                                Log.d("api call","loading")
-
-                            }
-                            is ApiState.Failure -> {
-                                val error = apiState.e
-                                // Xử lý lỗi và hiển thị thông báo lỗi
-                                Log.d("api call",error.toString())
-
-                            }
-                            is ApiState.Success -> {
-                                val data = apiState.data
-                                // Xử lý dữ liệu thành công
-                                Log.d("api call","success")
-                                if(data is ArrayList<*>)
-                                {
-                                    // Doing with data
-                                }
-                                Log.d("api call", "Data type: ${data::class.qualifiedName}")
-
-                            }
-                            is ApiState.Empty -> {
-                                // Xử lý trạng thái không có dữ liệu
-                                Log.d("api call","empty")
-
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
 
         // Inflate the layout for this fragment
         return view
