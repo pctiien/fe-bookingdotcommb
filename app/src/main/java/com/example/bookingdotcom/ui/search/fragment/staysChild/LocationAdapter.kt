@@ -40,6 +40,7 @@ class LocationAdapter(var dataList : MutableList<Location>) : RecyclerView.Adapt
             }
             holder.layout.setOnClickListener {
                 var intent = Intent(holder.itemView.context,LocationDetailActivity::class.java)
+                intent.putExtra("Location",item)
                 holder.itemView.context.startActivity(intent)
             }
         }

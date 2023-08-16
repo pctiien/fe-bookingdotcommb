@@ -2,7 +2,7 @@ package com.example.bookingdotcom.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Location(
+ data class Location (
 
     @SerializedName("locationId")
     var locationId   : Int?    = null,
@@ -18,4 +18,4 @@ data class Location(
     var description  : String? = null,
     @SerializedName("poster")
     var poster       : String? = null,
-)
+) : java.io.Serializable
