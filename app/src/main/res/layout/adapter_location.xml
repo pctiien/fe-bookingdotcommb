@@ -50,6 +50,7 @@
                 android:layout_height="wrap_content">
                 <include android:id="@+id/layout_rating" layout="@layout/rating"></include>
                 <TextView
+                    android:id="@+id/txt_reviews"
                     android:layout_marginStart="5dp"
                     android:layout_centerVertical="true"
                     android:layout_toEndOf="@id/layout_rating"

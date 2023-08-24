@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bookingdotcom.model.Location
+import com.example.bookingdotcom.model.LocationRequestModel
 import com.example.bookingdotcom.networkService.ApiState
 import com.example.bookingdotcom.repository.LocationRepository
 import com.example.bookingdotcom.viewmodel.LocationVM
@@ -28,7 +29,7 @@ class LocationActivity : AppCompatActivity() {
             this,
             LocationViewModelFactory(LocationRepository())
         )[LocationVM::class.java]
-        locationVM.getListLocation("a")
+        locationVM.getListLocation(LocationRequestModel())
         lifecycleScope.launch{
             locationVM.myDataList.collect{ apiState->
                 when(apiState)

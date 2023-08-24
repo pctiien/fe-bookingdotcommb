@@ -2,6 +2,7 @@ package com.example.bookingdotcom.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.bookingdotcom.model.LocationRequestModel
 import com.example.bookingdotcom.networkService.ApiState
 import com.example.bookingdotcom.repository.LocationRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,9 +13,9 @@ class LocationVM(private var repository: LocationRepository) : ViewModel() {
 
     val myDataList: MutableStateFlow<ApiState> = MutableStateFlow(ApiState.Empty)
 
-    fun getListLocation(destination:String) = viewModelScope.launch {
+    fun getListLocation(model: LocationRequestModel) = viewModelScope.launch {
         myDataList.value = ApiState.Loading
-        repository.getListLocation(destination)
+        repository.getListLocation(model)
             .catch { e ->
                 myDataList.value = ApiState.Failure(e)
             }.collect { data ->
