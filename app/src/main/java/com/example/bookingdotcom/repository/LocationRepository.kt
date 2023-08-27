@@ -1,4 +1,5 @@
 package com.example.bookingdotcom.repository
+import androidx.annotation.RestrictTo
 import com.example.bookingdotcom.model.Location
 import com.example.bookingdotcom.model.LocationRequestModel
 import kotlinx.coroutines.flow.Flow
@@ -12,4 +13,8 @@ class LocationRepository {
         val r = RetrofitClient.retrofit.getLocationData(model)
         emit(r)
     }.flowOn(Dispatchers.IO)
+    fun getLocationImgs(location_id : Int):Flow<List<String>> = flow{
+        val r = RetrofitClient.retrofit.getLocationImgs(location_id)
+        emit(r)
+    }
 }

@@ -10,4 +10,4 @@ data class Room (
     @SerializedName("price"    ) var price    : Int?      = null,
     @SerializedName("roomType" ) var roomType : RoomType? = RoomType()
 
-)
+): java.io.Serializable

@@ -7,4 +7,4 @@ data class BedType (
 
     @SerializedName("bedTypeName" ) var bedTypeName : String? = null
 
-)
+): java.io.Serializable

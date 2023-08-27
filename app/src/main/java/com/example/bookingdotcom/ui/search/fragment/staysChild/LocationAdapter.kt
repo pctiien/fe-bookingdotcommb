@@ -42,11 +42,12 @@ class LocationAdapter(var dataList : MutableList<Location>) : RecyclerView.Adapt
                 val hotelRoom = item.room?.roomType?.roomTypeBeds
                 if(hotelRoom?.size!!>0)
                 {
-                    holder.hotelRoom.text = (hotelRoom!!.size>0).let { "Hotel room : ${hotelRoom.get(0).quantity} ${hotelRoom.get(0).bedType!!.bedTypeName} bed" }
+                    val suffix = "Hotel room : ${hotelRoom.get(0).quantity} ${hotelRoom.get(0).bedType!!.bedTypeName} bed"
+                    holder.hotelRoom.text = suffix
                 }
                 holder.discount.text = item.room!!.price.toString()
-                holder.review.text = item.ratingQuantity.toString() + " reviews"
-                holder.price.text = (item.room!!.price!!.times(100-item.discount!!)).toString()
+                holder.review.text =getPropertyRating(item.rating!!)+" • "+item.ratingQuantity.toString() + " reviews"
+                holder.price.text = (item.room!!.price!!.times(100-item.discount!!)/100).toString()
                 holder.locationName.text = item.locationName
                 holder.rating.text = String.format("%.1f",item.rating)
                 Glide.with(holder.itemView.context).load(item.poster).transition(
@@ -61,6 +62,15 @@ class LocationAdapter(var dataList : MutableList<Location>) : RecyclerView.Adapt
 
     override fun getItemCount(): Int {
         return dataList.size
+    }
+    fun getPropertyRating(score : Double) : String
+    {
+        if(score>=9.5) return  "Exceptional"
+        else if(score>=9.0) return  "Superb"
+        else if(score>=8.5) return  "Fabulous"
+        else if(score>=8.0) return  "Very good"
+        else if(score>=7.0) return  "Good"
+        else return "Normal"
     }
 
 }

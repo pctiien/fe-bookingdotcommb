@@ -10,4 +10,6 @@ interface RetrofitInterface {
 
     @GET("api/Location")
     suspend fun getLocationData(@Query("model") model : LocationRequestModel): List<Location>
+    @GET("api/Location/Images")
+    suspend fun getLocationImgs(@Query("location_id") location_id : Int) : List<String>
 }

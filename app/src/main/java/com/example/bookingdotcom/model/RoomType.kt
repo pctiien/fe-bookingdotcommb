@@ -10,4 +10,4 @@ data class RoomType (
     @SerializedName("roomTypeName" ) var roomTypeName : RoomTypeName?           = RoomTypeName(),
     @SerializedName("roomTypeBeds" ) var roomTypeBeds : ArrayList<RoomTypeBeds> = arrayListOf()
 
-)
+): java.io.Serializable

@@ -30,6 +30,7 @@ class LocationActivity : AppCompatActivity() {
             LocationViewModelFactory(LocationRepository())
         )[LocationVM::class.java]
         locationVM.getListLocation(LocationRequestModel())
+        locationVM.getLocationImgs(5)
         lifecycleScope.launch{
             locationVM.myDataList.collect{ apiState->
                 when(apiState)
@@ -58,5 +59,6 @@ class LocationActivity : AppCompatActivity() {
 
             }
         }
+
     }
 }
