@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bookingdotcom.model.Location
+import com.example.bookingdotcom.model.Rating
 import com.example.bookingdotcom.networkService.ApiState
 import com.example.bookingdotcom.repository.LocationRepository
 import com.example.bookingdotcom.viewmodel.LocationVM
@@ -28,10 +29,13 @@ class LocationDetailActivity : AppCompatActivity() {
     lateinit var locationVM : LocationVM
     lateinit var LocationImgRecycler : RecyclerView
     lateinit var LocationImgAdapter : LocationImgAdapter
+    lateinit var LocationRatingRecycler : RecyclerView
+    lateinit var LocationRatingAdapter : LocationRatingAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_room_detail)
         location = intent.getSerializable("Location",Location::class.java)
+        LocationRatingRecycler = findViewById(R.id.list_ratingScores)
         LocationImgRecycler = findViewById(R.id.list_locationImg)
         locationName = findViewById(R.id.txt_locationName)
         ratingScore = findViewById(R.id.txt_scores)
@@ -52,6 +56,7 @@ class LocationDetailActivity : AppCompatActivity() {
                 price.text = location.room!!.price.toString()
             }
             locationVM.getLocationImgs(location.locationId!!)
+            locationVM.getLocationRatings(location.locationId!!)
             lifecycleScope.launch {
                 locationVM.myDataList.collect{apiState->
                     when(apiState)
@@ -60,10 +65,21 @@ class LocationDetailActivity : AppCompatActivity() {
                             val data = apiState.data
                             if(data is List<*>)
                             {
-                                val dataList: MutableList<String>
-                                dataList = data as MutableList<String>
-                                LocationImgAdapter = LocationImgAdapter(dataList)
-                                LocationImgRecycler.adapter = LocationImgAdapter
+                                when(apiState.source)
+                                {
+                                    "getLocationImgs"->{
+                                        val dataList: MutableList<String>
+                                        dataList = data as MutableList<String>
+                                        LocationImgAdapter = LocationImgAdapter(dataList)
+                                        LocationImgRecycler.adapter = LocationImgAdapter
+                                    }
+                                    "getLocationRatings"->{
+                                        val dataList : MutableList<Rating>
+                                        dataList = data as MutableList<Rating>
+                                        LocationRatingAdapter = LocationRatingAdapter(dataList)
+                                        LocationRatingRecycler.adapter = LocationRatingAdapter
+                                    }
+                                }
 
                             }
                         }

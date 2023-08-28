@@ -31,5 +31,16 @@ class LocationVM(private var repository: LocationRepository) : ViewModel() {
                 myDataList.value = ApiState.Success(data,"getLocationImgs")
             }
     }
+    fun getLocationRatings(locationId : Int)= viewModelScope.launch {
+        myDataList.value = ApiState.Loading
+        repository.getLocationRatings(locationId)
+            .catch { e->
+                myDataList.value = ApiState.Failure(e)
+            }
+            .collect{ data->
+                myDataList.value = ApiState.Success(data,"getLocationRatings")
+            }
+
+    }
 
 }
