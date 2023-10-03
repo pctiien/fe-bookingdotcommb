@@ -3,6 +3,7 @@ package com.example.bookingdotcom.ui.search.fragment.staysChild
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
@@ -20,9 +21,11 @@ class LocationActivity : AppCompatActivity() {
     lateinit var locationRVAdapter : LocationAdapter
     lateinit var locationVM :LocationVM
     lateinit var locationDataList : MutableList<Location>
+    lateinit var backIcon : AppCompatImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_location)
+        backIcon = findViewById(R.id.back_icon)
         locationRV = findViewById(R.id.locationRV)
         locationDataList = mutableListOf<Location>()
         locationVM = ViewModelProvider(
@@ -30,7 +33,9 @@ class LocationActivity : AppCompatActivity() {
             LocationViewModelFactory(LocationRepository())
         )[LocationVM::class.java]
         locationVM.getListLocation(LocationRequestModel())
-        locationVM.getLocationImgs(5)
+        backIcon.setOnClickListener {
+            this.finish()
+        }
         lifecycleScope.launch{
             locationVM.myDataList.collect{ apiState->
                 when(apiState)

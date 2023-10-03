@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
@@ -31,6 +32,7 @@ class LocationDetailActivity : AppCompatActivity() {
     lateinit var LocationImgAdapter : LocationImgAdapter
     lateinit var LocationRatingRecycler : RecyclerView
     lateinit var LocationRatingAdapter : LocationRatingAdapter
+    lateinit var backButton : AppCompatImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_room_detail)
@@ -41,6 +43,10 @@ class LocationDetailActivity : AppCompatActivity() {
         ratingScore = findViewById(R.id.txt_scores)
         price = findViewById(R.id.txt_price)
         discount = findViewById(R.id.txt_discount)
+        backButton = findViewById(R.id.btn_back)
+        backButton.setOnClickListener {
+            this.finish()
+        }
         locationVM = ViewModelProvider(
             this,
             LocationViewModelFactory(LocationRepository())

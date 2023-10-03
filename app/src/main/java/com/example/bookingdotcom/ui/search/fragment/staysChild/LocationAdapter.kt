@@ -37,17 +37,22 @@ class LocationAdapter(var dataList : MutableList<Location>) : RecyclerView.Adapt
 
                 if(item.discount!! <=0)
                 {
-                    holder.discount.visibility = View.INVISIBLE
+                    holder.discount.visibility = View.GONE
                 }
                 val hotelRoom = item.room?.roomType?.roomTypeBeds
                 if(hotelRoom?.size!!>0)
                 {
-                    val suffix = "Hotel room : ${hotelRoom.get(0).quantity} ${hotelRoom.get(0).bedType!!.bedTypeName} bed"
-                    holder.hotelRoom.text = suffix
+                    var roomDesciption = "";
+                    for(item in hotelRoom)
+                    {
+                        roomDesciption+="${item.quantity} ${item.bedType!!.bedTypeName}"
+                    }
+                    roomDesciption+=" bed room"
+                    holder.hotelRoom.text = roomDesciption
                 }
-                holder.discount.text = item.room!!.price.toString()
+                holder.discount.text =item.room!!.price.toString()
                 holder.review.text =getPropertyRating(item.rating!!)+" • "+item.ratingQuantity.toString() + " reviews"
-                holder.price.text = (item.room!!.price!!.times(100-item.discount!!)/100).toString()
+                holder.price.text ="VNĐ"+(item.room!!.price!!.times(100-item.discount!!)/100).toString()
                 holder.locationName.text = item.locationName
                 holder.rating.text = String.format("%.1f",item.rating)
                 Glide.with(holder.itemView.context).load(item.poster).transition(
