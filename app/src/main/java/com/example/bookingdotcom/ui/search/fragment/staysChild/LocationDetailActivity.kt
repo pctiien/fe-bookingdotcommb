@@ -2,15 +2,19 @@ package com.example.bookingdotcom.ui.search.fragment.staysChild
 
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.Orientation
 import com.example.bookingdotcom.model.Location
 import com.example.bookingdotcom.model.Rating
 import com.example.bookingdotcom.networkService.ApiState
@@ -20,6 +24,7 @@ import com.example.bookingdotcom.viewmodelfactory.LocationViewModelFactory
 import com.example.myapplication.R
 import kotlinx.coroutines.launch
 import java.io.Serializable
+
 
 class LocationDetailActivity : AppCompatActivity() {
     lateinit var location : Location
@@ -44,6 +49,18 @@ class LocationDetailActivity : AppCompatActivity() {
         price = findViewById(R.id.txt_price)
         discount = findViewById(R.id.txt_discount)
         backButton = findViewById(R.id.btn_back)
+        val gridLayoutManager = GridLayoutManager(this.baseContext, 6)
+        gridLayoutManager.orientation = RecyclerView.VERTICAL
+        gridLayoutManager.spanSizeLookup = object : SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                if (position <=1) {
+                    return 3
+                } else  {
+                    return 2
+                }
+            }
+        }
+        LocationImgRecycler.layoutManager = gridLayoutManager
         backButton.setOnClickListener {
             this.finish()
         }
