@@ -1,30 +1,27 @@
 package com.example.bookingdotcom.ui.search.fragment
-
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.util.Pair
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import com.example.bookingdotcom.model.Location
-import com.example.bookingdotcom.networkService.ApiState
 import com.example.bookingdotcom.repository.LocationRepository
-import com.example.bookingdotcom.ui.search.RangePickerBottomSheetFragment
 import com.example.bookingdotcom.ui.search.fragment.staysChild.LocationActivity
 import com.example.bookingdotcom.ui.search_activity.StaysSearchActivity
 import com.example.bookingdotcom.viewmodel.LocationVM
 import com.example.bookingdotcom.viewmodelfactory.LocationViewModelFactory
 import com.example.myapplication.R
+import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener
-import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.time.Duration.Companion.days
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -52,6 +49,7 @@ class StaysFragment : Fragment() {
     lateinit var calendarContainer :RelativeLayout
     lateinit var locationVM :LocationVM
     lateinit var searchButton : AppCompatButton
+    private lateinit var txt_DateRange : AppCompatTextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,17 +57,18 @@ class StaysFragment : Fragment() {
     ): View? {
         val view =inflater.inflate(R.layout.fragment_stays, container, false)
         searchContainer = view.findViewById<RelativeLayout>(R.id.stays_search)
+        txt_DateRange = view.findViewById(R.id.txt_DateRange)
         searchContainer.setOnClickListener {
             var intent : Intent = Intent(activity,StaysSearchActivity::class.java)
             startActivity(intent)
         }
         searchButton = view.findViewById<AppCompatButton>(R.id.btn_search)
         searchButton.setOnClickListener {
-            Log.d("Console","clicked")
             val intent = Intent(requireContext(),LocationActivity::class.java)
             startActivity(intent)
         }
         calendarContainer = view.findViewById<RelativeLayout>(R.id.stays_week)
+        implementDateRangePicker()
         locationVM = ViewModelProvider(
             this,
             LocationViewModelFactory(LocationRepository())
@@ -77,6 +76,49 @@ class StaysFragment : Fragment() {
 
         // Inflate the layout for this fragment
         return view
+    }
+
+    private fun implementDateRangePicker() {
+        var calendar  = Calendar.getInstance()
+        var today = calendar.timeInMillis
+        calendar.add(Calendar.DAY_OF_MONTH,1)
+        var tomorrow = calendar.timeInMillis
+        var selectedRange : androidx.core.util.Pair<Long,Long>
+        selectedRange = androidx.core.util.Pair(today,tomorrow)
+        var start = Date(selectedRange.first)
+        var end = Date(selectedRange.second)
+        val dateFormat = SimpleDateFormat("E, dd 'thg' MM", Locale("vi", "VN"))
+        txt_DateRange.text = "${dateFormat.format(start)} - ${dateFormat.format(end)}"
+        calendarContainer.setOnClickListener {
+            var today = Calendar.getInstance()
+            var nextYear = Calendar.getInstance()
+            nextYear.add(Calendar.YEAR,1)
+            nextYear.set(Calendar.MONTH,Calendar.getInstance().get(Calendar.MONTH))
+            val constraintsBuilder = CalendarConstraints.Builder()
+            constraintsBuilder.setStart(today.timeInMillis)
+            constraintsBuilder.setEnd(nextYear.timeInMillis)
+            val datePickerBuilder = MaterialDatePicker.Builder.dateRangePicker()
+            datePickerBuilder.setCalendarConstraints(constraintsBuilder.build())
+            datePickerBuilder.setSelection(selectedRange)
+            val datePicker = datePickerBuilder.build()
+            datePicker.show(childFragmentManager,"Date range picker")
+            // Setting up the event for when ok is clicked
+            datePicker.addOnPositiveButtonClickListener {
+                selectedRange = it
+                val first = (selectedRange as Pair<Long,Long>)?.first
+                val second = (selectedRange as Pair<Long,Long>)?.second
+                first?.let { start.time = first }
+                second?.let{end.time=second}
+                txt_DateRange.text = "${dateFormat.format(start)} - ${dateFormat.format(end)}"
+            }
+            // Setting up the event for when cancelled is clicked
+            datePicker.addOnNegativeButtonClickListener {
+            }
+
+            // Setting up the event for when back button is pressed
+            datePicker.addOnCancelListener {
+            }
+        }
     }
 
     companion object {
