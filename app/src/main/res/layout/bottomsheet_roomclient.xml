@@ -1,189 +1,200 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:orientation="vertical"
+<layout>
+    <data>
+        <variable name="model" type="com.example.bookingdotcom.model.LocationRequestViewModel">
+
+        </variable>
+    </data>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <RelativeLayout
-            android:paddingVertical="10dp"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <androidx.appcompat.widget.AppCompatTextView
-                android:textColor="@color/black"
-                android:text="Chọn phòng và khách"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/txt_type"
-                android:layout_centerVertical="true"
-                android:text="Phòng"
-                android:textSize="15sp"
-                android:textColor="@color/black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
             <RelativeLayout
-                android:layout_toEndOf="@id/txt_type"
-                android:layout_alignParentEnd="true"
-                android:layout_width="wrap_content"
+                android:paddingVertical="10dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-              <com.google.android.material.card.MaterialCardView
-                  android:layout_alignParentEnd="true"
-                  android:id="@+id/btn_room_plus"
-                  app:strokeColor="@color/spanish_sky_blue"
-                  app:strokeWidth="1dp"
-                  app:cardCornerRadius="2dp"
-                  android:layout_width="35dp"
-                  android:layout_height="35dp">
-                  <androidx.appcompat.widget.AppCompatTextView
-                      android:text="+"
-                      android:gravity="center_vertical"
-                      android:layout_gravity="center"
-                      android:textColor="@color/spanish_sky_blue"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"/>
-              </com.google.android.material.card.MaterialCardView>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:textColor="@color/black"
+                    android:text="Chọn phòng và khách"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txt_type"
+                    android:layout_centerVertical="true"
+                    android:text="Phòng"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <RelativeLayout
+                    android:layout_toEndOf="@id/txt_type"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_alignParentEnd="true"
+                        android:id="@+id/btn_room_plus"
+                        app:strokeColor="@color/spanish_sky_blue"
+                        app:strokeWidth="1dp"
+                        app:cardCornerRadius="2dp"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp">
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:text="+"
+                            android:gravity="center_vertical"
+                            android:layout_gravity="center"
+                            android:textColor="@color/spanish_sky_blue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    </com.google.android.material.card.MaterialCardView>
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/txt_room_amount"
                         android:layout_toStartOf="@id/btn_room_plus"
-                        android:text="1"
+                        android:text="@{String.valueOf(model.locationLiveData.RoomQuantity)}"
                         android:gravity="center"
                         android:layout_width="35dp"
                         android:layout_height="35dp"/>
-              <com.google.android.material.card.MaterialCardView
-                  android:layout_toStartOf="@id/txt_room_amount"
-                  android:id="@+id/btn_roomminus"
-                  app:strokeColor="@color/grey"
-                  app:strokeWidth="1dp"
-                  app:cardCornerRadius="2dp"
-                  android:layout_width="35dp"
-                  android:layout_height="35dp">
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:text="-"
-                        android:layout_gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-              </com.google.android.material.card.MaterialCardView>
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_toStartOf="@id/txt_room_amount"
+                        android:id="@+id/btn_roomminus"
+                        app:strokeColor="@color/grey"
+                        app:strokeWidth="1dp"
+                        app:cardCornerRadius="2dp"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp">
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:text="-"
+                            android:textColor="@color/grey"
+                            android:layout_gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    </com.google.android.material.card.MaterialCardView>
+                </RelativeLayout>
             </RelativeLayout>
-        </RelativeLayout>
-        <RelativeLayout
-            android:paddingVertical="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/txt_type2"
-                android:text="Người lớn"
-                android:layout_centerVertical="true"
-                android:textSize="15sp"
-                android:textColor="@color/black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
             <RelativeLayout
-                android:layout_toEndOf="@id/txt_type2"
-                android:layout_alignParentEnd="true"
-                android:layout_width="wrap_content"
+                android:paddingVertical="10dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_alignParentEnd="true"
-                    android:id="@+id/btn_adult_plus"
-                    app:strokeColor="@color/spanish_sky_blue"
-                    app:strokeWidth="1dp"
-                    app:cardCornerRadius="2dp"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp">
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:text="+"
-                        android:textColor="@color/spanish_sky_blue"
-                        android:layout_gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                </com.google.android.material.card.MaterialCardView>
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/txt_adult_amount"
-                    android:layout_toStartOf="@id/btn_adult_plus"
-                    android:text="2"
-                    android:gravity="center"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"/>
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_toStartOf="@id/txt_adult_amount"
-                    android:id="@+id/btn_adult_minus"
-                    app:strokeColor="@color/spanish_sky_blue"
-                    app:strokeWidth="1dp"
-                    app:cardCornerRadius="2dp"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp">
+                    android:id="@+id/txt_type2"
+                    android:text="Người lớn"
+                    android:layout_centerVertical="true"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <RelativeLayout
+                    android:layout_toEndOf="@id/txt_type2"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_alignParentEnd="true"
+                        android:id="@+id/btn_adult_plus"
+                        app:strokeColor="@color/spanish_sky_blue"
+                        app:strokeWidth="1dp"
+                        app:cardCornerRadius="2dp"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp">
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:text="+"
+                            android:textColor="@color/spanish_sky_blue"
+                            android:layout_gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    </com.google.android.material.card.MaterialCardView>
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:text="-"
-                        android:textColor="@color/spanish_sky_blue"
-                        android:layout_gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                </com.google.android.material.card.MaterialCardView>
+                        android:id="@+id/txt_adult_amount"
+                        android:layout_toStartOf="@id/btn_adult_plus"
+                        android:text="@{String.valueOf(model.locationLiveData.adultQuantity)}"
+                        android:gravity="center"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"/>
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_toStartOf="@id/txt_adult_amount"
+                        android:id="@+id/btn_adult_minus"
+                        app:strokeColor="@color/grey"
+                        app:strokeWidth="1dp"
+                        app:cardCornerRadius="2dp"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp">
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:text="-"
+                            android:textColor="@color/grey"
+                            android:layout_gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    </com.google.android.material.card.MaterialCardView>
+                </RelativeLayout>
             </RelativeLayout>
-        </RelativeLayout>
-        <RelativeLayout
-            android:paddingVertical="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/txt_type3"
-                android:text="Trẻ em"
-                android:textSize="15sp"
-                android:textColor="@color/black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
             <RelativeLayout
-                android:layout_toEndOf="@id/txt_type3"
-                android:layout_alignParentEnd="true"
-                android:layout_width="wrap_content"
+                android:paddingVertical="10dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_alignParentEnd="true"
-                    android:id="@+id/btn_child_plus"
-                    app:strokeColor="@color/spanish_sky_blue"
-                    app:strokeWidth="1dp"
-                    app:cardCornerRadius="2dp"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp">
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:text="+"
-                        android:layout_gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                </com.google.android.material.card.MaterialCardView>
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/txt_child_amount"
-                    android:layout_toStartOf="@id/btn_child_plus"
-                    android:text="1"
-                    android:gravity="center"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"/>
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_toStartOf="@id/txt_child_amount"
-                    android:id="@+id/btn_child_minus"
-                    app:strokeColor="@color/grey"
-                    app:strokeWidth="1dp"
-                    app:cardCornerRadius="2dp"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp">
+                    android:layout_centerVertical="true"
+                    android:id="@+id/txt_type3"
+                    android:text="Trẻ em"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <RelativeLayout
+                    android:layout_toEndOf="@id/txt_type3"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_alignParentEnd="true"
+                        android:id="@+id/btn_child_plus"
+                        app:strokeColor="@color/spanish_sky_blue"
+                        app:strokeWidth="1dp"
+                        app:cardCornerRadius="2dp"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp">
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:text="+"
+                            android:textColor="@color/spanish_sky_blue"
+                            android:layout_gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    </com.google.android.material.card.MaterialCardView>
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:text="-"
-                        android:layout_gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                </com.google.android.material.card.MaterialCardView>
+                        android:id="@+id/txt_child_amount"
+                        android:layout_toStartOf="@id/btn_child_plus"
+                        android:text="@{String.valueOf(model.locationLiveData.children.childrenQuantity)}"
+                        android:gravity="center"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"/>
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_toStartOf="@id/txt_child_amount"
+                        android:id="@+id/btn_child_minus"
+                        app:strokeColor="@color/grey"
+                        app:strokeWidth="1dp"
+                        app:cardCornerRadius="2dp"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp">
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:text="-"
+                            android:textColor="@color/grey"
+                            android:layout_gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    </com.google.android.material.card.MaterialCardView>
+                </RelativeLayout>
             </RelativeLayout>
-        </RelativeLayout>
-    </androidx.appcompat.widget.LinearLayoutCompat>
-</RelativeLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </RelativeLayout>
+</layout>

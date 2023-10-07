@@ -1,31 +1,29 @@
 package com.example.bookingdotcom.ui.search.fragment
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
-import android.widget.Toast
-import androidx.appcompat.widget.AppCompatButton
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.util.Pair
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.bookingdotcom.model.LocationRequestModel
+import com.example.bookingdotcom.model.LocationRequestViewModel
 import com.example.bookingdotcom.repository.LocationRepository
 import com.example.bookingdotcom.ui.search.fragment.staysChild.LocationActivity
 import com.example.bookingdotcom.ui.search_activity.StaysSearchActivity
 import com.example.bookingdotcom.viewmodel.LocationVM
 import com.example.bookingdotcom.viewmodelfactory.LocationViewModelFactory
-import com.example.myapplication.R
+import com.example.myapplication.databinding.FragmentStaysBinding
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
-import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.util.*
-import kotlin.time.Duration.Companion.days
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -49,82 +47,66 @@ class StaysFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
     }
-    lateinit var searchContainer : RelativeLayout
-    lateinit var calendarContainer :RelativeLayout
-    lateinit var roomClientsContainer : RelativeLayout
-    private lateinit var locationVM :LocationVM
-    lateinit var searchButton : AppCompatButton
-    lateinit var roomClientBottomSheet : RoomClientsBottomSheetDialog
     var locationRequestModel = LocationRequestModel()
-    private lateinit var txtDateRange : AppCompatTextView
-
+    private val locationViewModel :LocationRequestViewModel by viewModels()
+    private lateinit var locationVM :LocationVM
+    private lateinit var roomClientBottomSheet : RoomClientsBottomSheetDialog
+    private lateinit var mainBinding : FragmentStaysBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view =inflater.inflate(R.layout.fragment_stays, container, false)
-        roomClientBottomSheet = RoomClientsBottomSheetDialog()
-        roomClientsContainer = view.findViewById(R.id.room_clients_container)
-        searchContainer = view.findViewById(R.id.stays_search)
-        txtDateRange = view.findViewById(R.id.txt_DateRange)
-        roomClientsContainer.setOnClickListener {
+    ): View {
+
+        mainBinding = FragmentStaysBinding.inflate(layoutInflater)
+
+        mainBinding.model = locationViewModel
+
+        mainBinding.lifecycleOwner = this
+
+        roomClientBottomSheet = RoomClientsBottomSheetDialog(model = locationViewModel)
+
+        mainBinding.roomClientsContainer.setOnClickListener {
             roomClientBottomSheet.show(this.childFragmentManager,"Room Clients Bottom Sheet Dialog")
         }
-        searchContainer.setOnClickListener {
-            var intent : Intent = Intent(activity,StaysSearchActivity::class.java)
+        mainBinding.staysSearch.setOnClickListener {
+            val intent = Intent(activity,StaysSearchActivity::class.java)
             startActivity(intent)
         }
-        searchButton = view.findViewById<AppCompatButton>(R.id.btn_search)
-        searchButton.setOnClickListener {
+
+        mainBinding.searchButton.setOnClickListener {
             val intent = Intent(requireContext(),LocationActivity::class.java)
             intent.putExtra("Location Request Model",locationRequestModel)
             startActivity(intent)
         }
-        calendarContainer = view.findViewById<RelativeLayout>(R.id.stays_week)
+
         implementDateRangePicker()
+
         locationVM = ViewModelProvider(
             this,
             LocationViewModelFactory(LocationRepository())
         )[LocationVM::class.java]
 
-        // Inflate the layout for this fragment
-        return view
+        return mainBinding.root
     }
 
     private fun implementDateRangePicker() {
-        var calendar  = Calendar.getInstance()
-        var today = calendar.timeInMillis
-        calendar.add(Calendar.DAY_OF_MONTH,1)
-        var tomorrow = calendar.timeInMillis
-        var selectedRange : androidx.core.util.Pair<Long,Long>
-        selectedRange = androidx.core.util.Pair(today,tomorrow)
-        var start = Date(selectedRange.first)
-        var end = Date(selectedRange.second)
-        val dateFormat = SimpleDateFormat("E, dd 'thg' MM", Locale("vi", "VN"))
-        txtDateRange.text = "${dateFormat.format(start)} - ${dateFormat.format(end)}"
-        calendarContainer.setOnClickListener {
-            var today = Calendar.getInstance()
-            var nextYear = Calendar.getInstance()
+        var selectedRange = Pair(ZonedDateTime.of(locationRequestModel.Checkin, ZoneId.systemDefault()).toInstant().toEpochMilli()
+                            ,ZonedDateTime.of(locationRequestModel.Checkout, ZoneId.systemDefault()).toInstant().toEpochMilli())
+        mainBinding.staysWeek.setOnClickListener {
+            val nextYear = Calendar.getInstance()
             nextYear.add(Calendar.YEAR,1)
             nextYear.set(Calendar.MONTH,Calendar.getInstance().get(Calendar.MONTH))
             val constraintsBuilder = CalendarConstraints.Builder()
-            constraintsBuilder.setStart(today.timeInMillis)
+            constraintsBuilder.setStart(Calendar.getInstance().timeInMillis)
             constraintsBuilder.setEnd(nextYear.timeInMillis)
             val datePickerBuilder = MaterialDatePicker.Builder.dateRangePicker()
             datePickerBuilder.setCalendarConstraints(constraintsBuilder.build())
             datePickerBuilder.setSelection(selectedRange)
             val datePicker = datePickerBuilder.build()
             datePicker.show(childFragmentManager,"Date range picker")
-            // Setting up the event for when ok is clicked
             datePicker.addOnPositiveButtonClickListener {
                 selectedRange = it
-                val first = (selectedRange as Pair<Long,Long>)?.first
-                val second = (selectedRange as Pair<Long,Long>)?.second
-                first?.let { start.time = first }
-                second?.let{end.time=second}
-                locationRequestModel.Checkin = Instant.ofEpochSecond(first!!).atZone(ZoneId.systemDefault()).toLocalDateTime()
-                locationRequestModel.Checkout = Instant.ofEpochSecond(second!!).atZone(ZoneId.systemDefault()).toLocalDateTime()
-                txtDateRange.text = "${dateFormat.format(start)} - ${dateFormat.format(end)}"
+                locationViewModel.setCheckinout(selectedRange.first,selectedRange.second)
             }
             // Setting up the event for when cancelled is clicked
             datePicker.addOnNegativeButtonClickListener {
