@@ -78,7 +78,7 @@
                 android:paddingHorizontal="20dp"
                 android:paddingVertical="15dp"
                 android:layout_below="@id/stays_week"
-                android:id="@+id/stays_room"
+                android:id="@+id/room_clients_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <androidx.appcompat.widget.AppCompatImageView
@@ -102,7 +102,7 @@
             </RelativeLayout>
             <RelativeLayout
                 android:layout_marginTop="-3dp"
-                android:layout_below="@id/stays_room"
+                android:layout_below="@id/room_clients_container"
                 android:id="@+id/search_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">

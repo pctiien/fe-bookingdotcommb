@@ -9,7 +9,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
                 <RelativeLayout
-                    android:background="@color/hardblue"
+                    android:background="@color/dark_midnight_blue"
                     android:id="@+id/banner"
                     android:layout_width="match_parent"
                     android:layout_height="85dp">
@@ -48,7 +48,7 @@
 
                 </RelativeLayout>
             <androidx.recyclerview.widget.RecyclerView
-                    android:background="@color/hardblue"
+                    android:background="@color/dark_midnight_blue"
                     android:layout_below="@id/banner"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:orientation="horizontal"

@@ -5,7 +5,7 @@
     tools:context="com.example.bookingdotcom.ui.bookings.BookingsFragment">
 
     <Toolbar
-        android:background="@color/hardblue"
+        android:background="@color/dark_midnight_blue"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="95dp">

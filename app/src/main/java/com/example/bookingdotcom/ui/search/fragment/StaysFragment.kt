@@ -11,6 +11,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.util.Pair
 import androidx.lifecycle.ViewModelProvider
+import com.example.bookingdotcom.model.LocationRequestModel
 import com.example.bookingdotcom.repository.LocationRepository
 import com.example.bookingdotcom.ui.search.fragment.staysChild.LocationActivity
 import com.example.bookingdotcom.ui.search_activity.StaysSearchActivity
@@ -20,6 +21,9 @@ import com.example.myapplication.R
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
 import java.util.*
 import kotlin.time.Duration.Companion.days
 
@@ -47,17 +51,25 @@ class StaysFragment : Fragment() {
     }
     lateinit var searchContainer : RelativeLayout
     lateinit var calendarContainer :RelativeLayout
-    lateinit var locationVM :LocationVM
+    lateinit var roomClientsContainer : RelativeLayout
+    private lateinit var locationVM :LocationVM
     lateinit var searchButton : AppCompatButton
-    private lateinit var txt_DateRange : AppCompatTextView
+    lateinit var roomClientBottomSheet : RoomClientsBottomSheetDialog
+    var locationRequestModel = LocationRequestModel()
+    private lateinit var txtDateRange : AppCompatTextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view =inflater.inflate(R.layout.fragment_stays, container, false)
-        searchContainer = view.findViewById<RelativeLayout>(R.id.stays_search)
-        txt_DateRange = view.findViewById(R.id.txt_DateRange)
+        roomClientBottomSheet = RoomClientsBottomSheetDialog()
+        roomClientsContainer = view.findViewById(R.id.room_clients_container)
+        searchContainer = view.findViewById(R.id.stays_search)
+        txtDateRange = view.findViewById(R.id.txt_DateRange)
+        roomClientsContainer.setOnClickListener {
+            roomClientBottomSheet.show(this.childFragmentManager,"Room Clients Bottom Sheet Dialog")
+        }
         searchContainer.setOnClickListener {
             var intent : Intent = Intent(activity,StaysSearchActivity::class.java)
             startActivity(intent)
@@ -65,6 +77,7 @@ class StaysFragment : Fragment() {
         searchButton = view.findViewById<AppCompatButton>(R.id.btn_search)
         searchButton.setOnClickListener {
             val intent = Intent(requireContext(),LocationActivity::class.java)
+            intent.putExtra("Location Request Model",locationRequestModel)
             startActivity(intent)
         }
         calendarContainer = view.findViewById<RelativeLayout>(R.id.stays_week)
@@ -88,7 +101,7 @@ class StaysFragment : Fragment() {
         var start = Date(selectedRange.first)
         var end = Date(selectedRange.second)
         val dateFormat = SimpleDateFormat("E, dd 'thg' MM", Locale("vi", "VN"))
-        txt_DateRange.text = "${dateFormat.format(start)} - ${dateFormat.format(end)}"
+        txtDateRange.text = "${dateFormat.format(start)} - ${dateFormat.format(end)}"
         calendarContainer.setOnClickListener {
             var today = Calendar.getInstance()
             var nextYear = Calendar.getInstance()
@@ -109,7 +122,9 @@ class StaysFragment : Fragment() {
                 val second = (selectedRange as Pair<Long,Long>)?.second
                 first?.let { start.time = first }
                 second?.let{end.time=second}
-                txt_DateRange.text = "${dateFormat.format(start)} - ${dateFormat.format(end)}"
+                locationRequestModel.Checkin = Instant.ofEpochSecond(first!!).atZone(ZoneId.systemDefault()).toLocalDateTime()
+                locationRequestModel.Checkout = Instant.ofEpochSecond(second!!).atZone(ZoneId.systemDefault()).toLocalDateTime()
+                txtDateRange.text = "${dateFormat.format(start)} - ${dateFormat.format(end)}"
             }
             // Setting up the event for when cancelled is clicked
             datePicker.addOnNegativeButtonClickListener {
